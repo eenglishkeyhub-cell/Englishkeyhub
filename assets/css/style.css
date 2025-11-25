@@ -1,0 +1,830 @@
+/* Root Variables */
+:root {
+    /* Gradient Colors - Vibrant and Friendly */
+    --gradient-primary: linear-gradient(135deg, #7EC8E3 0%, #7EC8E3 100%);
+    --gradient-secondary: linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%);
+    --gradient-pink: linear-gradient(135deg, #7EC8E3 0%, #7EC8E3 100%);
+    --gradient-purple: linear-gradient(135deg, #7EC8E3 0%, #7EC8E3 100%);
+    --gradient-blue: linear-gradient(135deg, #74B9FF 0%, #0984E3 100%);
+    --gradient-green: linear-gradient(135deg, #55EFC4 0%, #00B894 100%);
+    --gradient-soft-pink: linear-gradient(135deg, #7EC8E3 0%, #FED6E3 100%);
+    
+    /* Primary Colors */
+    --primary-pink: #7EC8E3;
+    --primary-purple: #7D4DFF;
+    --primary-blue: #0984E3;
+    --primary-green: #00B894;
+    --primary-yellow: #FDCB6E;
+    
+    /* Neutral Colors */
+    --light-bg: #F8F9FB;
+    --card-bg: #FFFFFF;
+    --text-primary: #2D3436;
+    --text-secondary: #636E72;
+    --text-light: #B2BEC3;
+    --border-light: #E1E8ED;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   GLOBAL STYLES
+   ========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+}
+
+.text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+
+.btn {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 10px 24px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-gradient {
+    background: var(--gradient-primary);
+    color: white !important;
+    border: none;
+}
+
+.btn-gradient:hover {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 6px 20px rgba(107, 124, 255, 0.4);
+}
+
+.btn-lg {
+    font-size: 1.1rem;
+    padding: 12px 32px;
+}
+
+.btn-sm {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+}
+
+/* ==========================================
+   CARDS
+   ========================================== */
+
+.card {
+    border: none;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.card-custom {
+    background: var(--card-bg);
+    border: 2px solid var(--border-light);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-custom:hover {
+    border-color: var(--primary-pink);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+.card-title {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ======== الكلاس الجديد للكروت المتساوية ======== */
+.feature-card {
+    height: 380px;               
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* ==========================================
+   ICONS & CIRCLES
+   ========================================== */
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+}
+
+.bg-gradient-pink {
+    background: var(--gradient-pink);
+}
+
+.bg-gradient-purple {
+    background: var(--gradient-purple);
+}
+
+.bg-gradient-blue {
+    background: var(--gradient-blue);
+}
+
+.bg-gradient-green {
+    background: var(--gradient-green);
+}
+
+/* ==========================================
+   GRADIENTS & BACKGROUNDS
+   ========================================== */
+
+.bg-gradient {
+    background: var(--gradient-primary) !important;
+}
+
+.bg-gradient-soft-pink {
+    background: var(--gradient-soft-pink) !important;
+}
+
+.hero-section {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+}
+
+.hero-section-small {
+    background: var(--gradient-primary);
+    padding: 40px 0;
+}
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navbar {
+    background-color: white !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* ==========================================
+   FORMS
+   ========================================== */
+
+.form-control,
+.form-select {
+    border: 2px solid var(--border-light);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 0 0.2rem rgba(107, 124, 255, 0.25);
+    background-color: white;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ==========================================
+   INPUTS - File Upload
+   ========================================== */
+
+input[type="file"] {
+    display: block;
+}
+
+.input-group-text {
+    background-color: var(--light-bg);
+    border-color: var(--border-light);
+}
+
+/* ==========================================
+   MODALS
+   ========================================== */
+
+.modal-content {
+    border: none;
+    box-shadow: var(--shadow-lg);
+    border-radius: 24px;
+}
+
+.modal-header {
+    border: none;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 24px 24px 0 0;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.btn-close-white {
+    filter: brightness(0) invert(1);
+}
+
+.modal-footer {
+    border: none;
+    padding: 16px 24px;
+    background-color: var(--light-bg);
+    border-radius: 0 0 24px 24px;
+}
+
+/* ==========================================
+   TABS
+   ========================================== */
+
+.nav-tabs {
+    border: none;
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-secondary) !important;
+    border: none;
+    font-weight: 600;
+    border-radius: 16px 16px 0 0;
+    margin-right: 8px;
+}
+
+.nav-tabs .nav-link.active {
+    background: var(--gradient-primary);
+    color: white !important;
+}
+
+.tab-pane {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   ALERTS
+   ========================================== */
+
+.alert {
+    border: none;
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #D4EDDA;
+    color: #155724;
+    border-left: 4px solid #28A745;
+}
+
+.alert-danger {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border-left: 4px solid #F5C6CB;
+}
+
+.alert-info {
+    background-color: #D1ECF1;
+    color: #0C5460;
+    border-left: 4px solid #17A2B8;
+}
+
+.alert-warning {
+    background-color: #FFF3CD;
+    color: #856404;
+    border-left: 4px solid #FDCB6E;
+}
+
+/* ==========================================
+   SPINNER / LOADING
+   ========================================== */
+
+.spinner-border {
+    border: 4px solid var(--border-light);
+    border-right-color: var(--primary-pink);
+    animation: spin 0.8s linear infinite;
+}
+
+.text-gradient {
+    color: var(--primary-pink);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+footer {
+    background-color: #1D2530 !important;
+    color: white;
+    margin-top: 80px;
+    padding: 32px 0;
+}
+
+footer p {
+    color: white;
+    margin-bottom: 0;
+}
+
+footer .text-muted {
+    color: #B2BEC3 !important;
+}
+
+/* ==========================================
+   SECTIONS
+   ========================================== */
+
+section {
+    padding: 60px 0;
+}
+
+section.py-5 {
+    padding: 60px 0;
+}
+
+/* ==========================================
+   ROWS & COLUMNS
+   ========================================== */
+
+.row {
+    margin-bottom: 0;
+}
+
+.g-4 > * {
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+}
+
+/* ==========================================
+   LIST ITEMS
+   ========================================== */
+
+.list-unstyled li {
+    margin-bottom: 16px;
+}
+
+.list-group-item {
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: var(--light-bg);
+    transform: translateX(4px);
+}
+
+.list-group-item.active {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+/* ==========================================
+   TABLE STYLES
+   ========================================== */
+
+.table {
+    border-collapse: collapse;
+}
+
+.table thead th {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    font-weight: 700;
+    padding: 16px;
+}
+
+.table tbody td {
+    padding: 16px;
+    border-color: var(--border-light);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+/* ==========================================
+   BADGE STYLES
+   ========================================== */
+
+.badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.badge-success {
+    background-color: #00B894;
+    color: white;
+}
+
+.badge-warning {
+    background-color: #FDCB6E;
+    color: #2D3436;
+}
+
+.badge-danger {
+    background-color: #FF6B6B;
+    color: white;
+}
+
+/* ==========================================
+   PROGRESS BAR
+   ========================================== */
+
+.progress {
+    background-color: var(--border-light);
+    border-radius: 12px;
+    height: 24px;
+}
+
+.progress-bar {
+    background: var(--gradient-primary);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero-section {
+        padding: 60px 0;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    section {
+        padding: 40px 0;
+    }
+
+    .card-custom {
+        padding: 16px;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 576px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .hero-section {
+        padding: 40px 0;
+    }
+
+    .hero-section-small {
+        padding: 30px 0;
+    }
+
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    section {
+        padding: 30px 0;
+    }
+
+    .card-custom {
+        padding: 12px;
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn-lg {
+        padding: 10px 24px;
+        font-size: 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        font-size: 0.95rem;
+    }
+
+    .container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .list-group-item {
+        font-size: 0.9rem;
+        padding: 12px 16px;
+    }
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.rounded-4 {
+    border-radius: 24px !important;
+}
+
+.rounded-3 {
+    border-radius: 16px !important;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+.fw-normal {
+    font-weight: 400;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+/* ==========================================
+   ANIMATION
+   ========================================== */
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.animate-slide-up {
+    animation: slideInUp 0.6s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ==========================================
+   SCROLLBAR STYLING
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-pink);
+}
+
+/* ==========================================
+   DROPDOWN STYLES
+   ========================================== */
+
+.dropdown-menu {
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.dropdown-item {
+    padding: 12px 20px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.dropdown-item:hover {
+    background-color: var(--light-bg);
+    color: var(--primary-pink);
+}
+
+.dropdown-item.active {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+/* End of CSS */
