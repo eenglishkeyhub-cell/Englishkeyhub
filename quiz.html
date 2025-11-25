@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Englishkeyhub - Quiz Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    .quiz-card { transition: 0.3s ease; border-width: 3px !important; }
+    .quiz-card.correct { border-color: #28a745 !important; box-shadow: 0 0 15px rgba(40,167,69,0.5); }
+    .quiz-card.incorrect { border-color: #dc3545 !important; box-shadow: 0 0 15px rgba(220,53,69,0.5); }
+    .feedback { font-weight: 600; margin-top: 8px; font-size: 1rem; }
+    .feedback.correct { color: #28a745; }
+    .feedback.incorrect { color: #dc3545; }
+    .hero-small { background: linear-gradient(135deg, #ff8ad8, #8ecbff); color: white; }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-gradient" href="index.html">Englishkeyhub </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="components.html">Components</a></li>
+          <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
+          <li class="nav-item"><a class="nav-link" href="press.html">Press</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Title -->
+  <section class="hero-small py-4 text-center">
+    <div class="container">
+      <h1 class="display-6 fw-bold">Quiz Time! 🎮</h1>
+      <p class="mb-0">Write your name, grade, and choose a lesson to begin.</p>
+    </div>
+  </section>
+
+  <main class="flex-grow-1 py-5">
+    <div class="container">
+
+      <!-- Start Section -->
+      <div id="startSection" class="row justify-content-center mb-4">
+        <div class="col-md-8 col-lg-6">
+          <div class="card rounded-4 shadow-sm p-4">
+
+            <h2 class="h4 mb-3 text-center">Enter your details</h2>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Name</label>
+              <input type="text" id="studentName" class="form-control" placeholder="Write your name">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Grade</label>
+              <select id="studentGrade" class="form-select">
+                <option value="">Choose your grade</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Choose Lesson</label>
+              <select id="lessonSelect" class="form-select">
+                <option value="">Select a lesson</option>
+                <!-- الخيارات تنضاف بالديناميك حسب الصف -->
+              </select>
+            </div>
+
+            <div id="startError" class="text-danger small mb-2 d-none">
+              Please fill all fields before starting.
+            </div>
+
+            <div class="text-center">
+              <button id="startBtn" class="btn btn-gradient fw-bold">
+                Start the game 🚀
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Section -->
+      <div id="quizSection" class="d-none">
+
+        <div class="text-center mb-4">
+          <h2 class="h4 fw-bold" id="welcomePlayer"></h2>
+        </div>
+
+        <!-- LESSON PARAGRAPH -->
+        <div class="row justify-content-center mb-4">
+          <div class="col-lg-10">
+            <div class="card rounded-4 shadow-sm p-4">
+              <h3 class="h5 fw-bold mb-2" id="lessonTitle"></h3>
+              <p id="lessonText"></p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted text-center mt-2 mb-4">
+          Choose the correct answer. Green = correct 🌟 | Red = try again ❤️
+        </p>
+
+        <div id="quizContainer" class="row g-4"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Englishkeyhub. All rights reserved.</p>
+      <p class="text-muted small mb-0">Designed with 💜 for girls like you!</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* ============================
+       10 FULL LESSONS (مع تحديد الصف)
+       ============================ */
+
+    const lessons = [
+      /* ---------- LESSON 1 (G6) ---------- */
+      {
+        grade: "Grade 6",
+        title: "Lesson 1 – Fatima Al-Fihri (G6)",
+        paragraph:
+          "Fatima Al-Fihri was a remarkable woman who lived more than 1,000 years ago. She moved with her family from Kairouan in Tunisia to Fez in Morocco. When her father died, she used her money to build the University of Al-Qarawiyyin, the oldest existing university in the world. Students from many countries went there to study religion, maths, science and more, so she is remembered as one of the first women to support education.",
+        questions: [
+          {
+            text: "What type of text is the passage about Fatima Al-Fihri?",
+            options: ["A poem", "A biography", "A dialogue"],
+            correct: 1
+          },
+          {
+            text: "Where was Fatima Al-Fihri born?",
+            options: ["Kairouan, in Tunisia", "Fez, in Morocco", "Cairo, in Egypt"],
+            correct: 0
+          },
+          {
+            text: "What did Fatima decide to build with her money?",
+            options: [
+              "A hospital",
+              "A mosque that was also a school",
+              "A house for her family"
+            ],
+            correct: 1
+          },
+          {
+            text: "What could students study at Al-Qarawiyyin?",
+            options: [
+              "Only art and music",
+              "Only math and reading",
+              "Religion, math, science and more"
+            ],
+            correct: 2
+          },
+          {
+            text: "Why is Fatima Al-Fihri remembered today?",
+            options: [
+              "Because she travelled a lot",
+              "Because she supported education and built a famous university",
+              "Because she was a queen"
+            ],
+            correct: 1
+          }
+        ]
+      },
+
+      /* ---------- LESSON 2 (G6) ---------- */
+      {
+        grade: "Grade 6",
+        title: "Lesson 2 – Signs & Notices (G6)",
+        paragraph:
+          "Read the different signs carefully. They give important rules, times and safety information that you might see in real life, for example on buses, in shops, zoos or during an exam.",
+        questions: [
+          {
+            text: "Sign 1: “No entry without a helmet. Please wear your helmet before entering the construction site.” This sign means:",
+            options: [
+              "You can enter without a helmet.",
+              "You must wear a helmet to enter.",
+              "Helmets are sold here."
+            ],
+            correct: 1
+          },
+          {
+            text: "Sign 2: “Next bus in 10 minutes. Please wait behind the yellow line until the bus arrives.” This sign means:",
+            options: [
+              "You can walk on the yellow line while waiting.",
+              "You have to wait 10 minutes for the next bus.",
+              "The bus is late."
+            ],
+            correct: 1
+          },
+          {
+            text: "Sign 3: “Please do not feed the animals. Feeding them can make them sick and disturb their natural diet.” This sign means:",
+            options: [
+              "You can feed the animals.",
+              "Feeding the animals is not allowed.",
+              "Only children can feed the animals."
+            ],
+            correct: 1
+          },
+          {
+            text: "Sign 4: “Ali’s Fish Shop. Open from 9 a.m. to 5 p.m. Monday to Friday. Closed on weekends.” This sign means:",
+            options: [
+              "The shop is open all day, every day.",
+              "The shop is open between 9 a.m. and 5 p.m.",
+              "The shop closes at 9 a.m."
+            ],
+            correct: 1
+          },
+          {
+            text: "Sign 5: “Keep your bag with you at all times. Unattended bags may be removed for security reasons.” This sign means:",
+            options: [
+              "You can leave your bag anywhere.",
+              "You must carry your bag with you.",
+              "Bags are free here."
+            ],
+            correct: 1
+          },
+          {
+            text: "Sign 6: “Quiet, please – Exam in progress. Talking or making noise is not allowed until the exam is finished.” This sign means:",
+            options: [
+              "You can talk loudly.",
+              "You must be quiet.",
+              "You can take a break."
+            ],
+            correct: 1
+          }
+        ]
+      },
+
+      /* ---------- LESSON 3 (G6) ---------- */
+      {
+        grade: "Grade 6",
+        title: "Lesson 3 – Diving Instructor (G6)",
+        paragraph:
+          "Sara, Hamad and Laila all love diving. Sara grew up near the sea in Bahrain and joined a diving club when she was eighteen. Hamad tried diving for the first time on holiday in Oman and later studied marine biology at university. Laila started in a summer diving course in Qatar and later studied tourism and hospitality. Now all three of them work with divers and tourists and help people enjoy and protect the sea.",
+        questions: [
+          {
+            text: "Who first tried diving during a holiday?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 1
+          },
+          {
+            text: "Who became one of the best students at their diving club?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 0
+          },
+          {
+            text: "Who organizes trips to collect plastic from the sea?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 1
+          },
+          {
+            text: "Who was not very interested in diving at first?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 2
+          },
+          {
+            text: "Who studied tourism and hospitality at university?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 2
+          },
+          {
+            text: "Who loves seeing beginners happy when they dive for the first time?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 0
+          },
+          {
+            text: "Who teaches people about keeping the sea clean?",
+            options: ["Sara", "Hamad", "Laila"],
+            correct: 1
+          }
+        ]
+      },
+
+      /* ---------- LESSON 4 (G6) ---------- */
+      {
+        grade: "Grade 6",
+        title: "Lesson 4 – Short Dialogues (G6)",
+        paragraph:
+          "In this lesson you complete short everyday conversations. Read the question carefully and choose the reply that makes the best conversation.",
+        questions: [
+          {
+            text: "“What time does your English class start?”",
+            options: [
+              "It starts at half past eight.",
+              "I study English.",
+              "It’s on my desk."
+            ],
+            correct: 0
+          },
+          {
+            text: "“Would you like to join our school club?”",
+            options: [
+              "No, I don’t play football.",
+              "Yes, that sounds fun!",
+              "I’m doing my homework."
+            ],
+            correct: 1
+          },
+          {
+            text: "“How much are these pencils?”",
+            options: [
+              "They’re one dinar fifty.",
+              "I write with them.",
+              "I need two."
+            ],
+            correct: 0
+          },
+          {
+            text: "“What would you like to eat?”",
+            options: [
+              "I’m eating now.",
+              "Yes, I do.",
+              "A cheese sandwich, please."
+            ],
+            correct: 2
+          },
+          {
+            text: "“I’m going to the library after lunch.”",
+            options: [
+              "Good idea! I’ll come with you.",
+              "I’m eating in the canteen.",
+              "It’s a nice place."
+            ],
+            correct: 0
+          }
+        ]
+      },
+
+      /* ---------- LESSON 5 (G6) ---------- */
+      {
+        grade: "Grade 6",
+        title: "Lesson 5 – New Café in Manama (G6)",
+        paragraph:
+          "Pearl Garden is a new café in the centre of Manama. The owner, Fatima Ahmed, wanted a place where young people and families can relax and enjoy both Bahraini and international food. Inside there are soft chairs, wooden tables and photos of Bahrain’s old pearl divers. Many people visit the café in the evenings to meet friends or celebrate birthdays, and on weekends there is often live oud music. Fatima hopes everyone feels welcome and proud of Bahraini culture.",
+        questions: [
+          {
+            text: "What food or drink is mentioned in the text?",
+            options: [
+              "Pizza and burgers only.",
+              "Karak tea, balaleet, sandwiches or cakes.",
+              "Only drinks, no food."
+            ],
+            correct: 1
+          },
+          {
+            text: "“Everyone feels welcome” means:",
+            options: [
+              "People must pay a lot to enter.",
+              "Only friends can enter.",
+              "Everyone is invited and can enjoy the café."
+            ],
+            correct: 2
+          },
+          {
+            text: "Where is Pearl Garden located, and why is this a good place for a café?",
+            options: [
+              "It is near Bab Al Bahrain, so many people can visit easily.",
+              "It is outside the city, so it is very quiet.",
+              "It is in a small village far from Manama."
+            ],
+            correct: 0
+          },
+          {
+            text: "What kind of decoration can people see inside the café?",
+            options: [
+              "Pictures of famous football players from Bahrain.",
+              "Photos of Bahrain’s pearl divers and traditional life.",
+              "Drawings of animals and nature from other countries."
+            ],
+            correct: 1
+          },
+          {
+            text: "What types of food and drinks does the café serve?",
+            options: [
+              "Only international food like pizza and burgers.",
+              "Only Bahraini food and no drinks.",
+              "Both Bahraini and international food and drinks."
+            ],
+            correct: 2
+          },
+          {
+            text: "Why do many people visit Pearl Garden in the evening?",
+            options: [
+              "Because they want to study quietly after school.",
+              "Because they can meet friends or enjoy live oud music.",
+              "Because they can play sports there."
+            ],
+            correct: 1
+          },
+          {
+            text: "What does Fatima want to achieve through her café?",
+            options: [
+              "She wants to make people love fast food.",
+              "She wants to share and celebrate Bahraini culture with others.",
+              "She wants to open many cafés around the world."
+            ],
+            correct: 1
+          }
+        ]
+      },
+
+      /* ---------- LESSON 6 (G7) ---------- */
+      {
+        grade: "Grade 7",
+        title: "Lesson 1 – School Signs (G7)",
+        paragraph:
+          "Read and match the school sentences with the correct signs. The signs give rules about phones, bags, walking and lessons.",
+        questions: [
+          {
+            text: "“You can’t use your phone.” Which sign matches this?",
+            options: [
+              "No entrance to art room – use other door.",
+              "Turn off all mobiles during lessons.",
+              "No running in the school hall."
+            ],
+            correct: 1
+          },
+          {
+            text: "“You should put things back in the right place.” Which sign matches this?",
+            options: [
+              "Study Centre – please return all books to the correct shelf.",
+              "Year 6 trip to science museum – bus leaves Saturday.",
+              "Found – student’s bag, see Mrs. Wade in office."
+            ],
+            correct: 0
+          },
+          {
+            text: "“Go here if you have lost something.” Which sign matches this?",
+            options: [
+              "Class 4B – no history class today, teacher ill.",
+              "Found – student’s bag, see Mrs. Wade in office.",
+              "No entrance to art room – use other door."
+            ],
+            correct: 1
+          },
+          {
+            text: "“You must walk in this place.” Which sign matches this?",
+            options: [
+              "No running in school hall.",
+              "Turn off all mobiles during lessons.",
+              "Keep your bag with you at all times."
+            ],
+            correct: 0
+          },
+          {
+            text: "“These students do not have lessons.” Which sign matches this?",
+            options: [
+              "Class 4B – no history class today, teacher ill.",
+              "Next bus in 10 minutes.",
+              "Quiet please – exam in progress."
+            ],
+            correct: 0
+          },
+          {
+            text: "“You cannot go in through here.” Which sign matches this?",
+            options: [
+              "No entrance to art room – use other door.",
+              "Study Centre – please return all books.",
+              "Year 6 trip to science museum."
+            ],
+            correct: 0
+          }
+        ]
+      },
+
+      /* ---------- LESSON 7 (G7) ---------- */
+      {
+        grade: "Grade 7",
+        title: "Lesson 2 – City Signs (G7)",
+        paragraph:
+          "These notices are from a city with cinemas, concerts, hospitals and shops. Read the sentences and choose the sign that has this meaning.",
+        questions: [
+          {
+            text: "“Be careful when you cross here.” Which sign matches this?",
+            options: [
+              "Look out – busy road.",
+              "No stopping – hospital entrance.",
+              "Cheap CDs for sale."
+            ],
+            correct: 0
+          },
+          {
+            text: "“There are tickets for this evening.” Which sign matches this?",
+            options: [
+              "No rock concert tonight – singer ill.",
+              "Carlton Cinema – seats available for 21:15 performance.",
+              "Watch repairs while you wait."
+            ],
+            correct: 1
+          },
+          {
+            text: "“Cars cannot park here.” Which sign matches this?",
+            options: [
+              "No stopping – hospital entrance.",
+              "30–40 mins delay for all appointments.",
+              "Buy two films for the price of one."
+            ],
+            correct: 0
+          },
+          {
+            text: "“We will give you something free.” Which sign matches this?",
+            options: [
+              "Buy two films for the price of one.",
+              "Cheap CDs for sale.",
+              "No rock concert tonight."
+            ],
+            correct: 0
+          },
+          {
+            text: "“You will have to wait to see the doctor.” Which sign matches this?",
+            options: [
+              "Watch repairs while you wait.",
+              "30–40 mins delay for all appointments – sorry.",
+              "No stopping – hospital entrance."
+            ],
+            correct: 1
+          },
+          {
+            text: "“Buy your favourite songs here.” Which sign matches this?",
+            options: [
+              "Cheap CDs for sale.",
+              "Carlton Cinema – seats available.",
+              "Buy two films for the price of one."
+            ],
+            correct: 0
+          }
+        ]
+      },
+
+      /* ---------- LESSON 8 (G7) ---------- */
+      {
+        grade: "Grade 7",
+        title: "Lesson 3 – Sports Notices (G7)",
+        paragraph:
+          "These signs are about football, swimming and other sports. Match each sentence with the most suitable sports notice.",
+        questions: [
+          {
+            text: "“Everyone in the football team should go here this afternoon.” Which sign matches this?",
+            options: [
+              "Meeting for football team members in school hall – 4 p.m.",
+              "Learn to swim – lessons Tuesday and Thursday.",
+              "Love football? Tickets for next week’s match."
+            ],
+            correct: 0
+          },
+          {
+            text: "“You can buy the sports clothes you need there.” Which sign matches this?",
+            options: [
+              "Sale on today – half-price football shirts from $15.",
+              "City pool – do not leave anything in the changing room.",
+              "See this evening’s match at Sunhill Stadium for just $10."
+            ],
+            correct: 0
+          },
+          {
+            text: "“The bad weather has stopped people playing sport.” Which sign matches this?",
+            options: [
+              "Because of the heavy snow there is no baseball practice.",
+              "Learn to swim – lessons on Tuesday and Thursday.",
+              "Love football? Tickets for next week’s match."
+            ],
+            correct: 0
+          },
+          {
+            text: "“If you want to do this sport, you should call this number.” Which sign matches this?",
+            options: [
+              "Stop watching and start playing – join the tennis club 2857341.",
+              "City pool – do not leave anything in the changing room.",
+              "Meeting for football team members in school hall."
+            ],
+            correct: 0
+          },
+          {
+            text: "“It’s not expensive to watch sport here tonight.” Which sign matches this?",
+            options: [
+              "See this evening’s match at Sunhill Stadium for just $10.",
+              "Tickets for next week’s match $30.",
+              "Sale on today – half-price football shirts."
+            ],
+            correct: 0
+          },
+          {
+            text: "“If you are a beginner at this sport, you can join these classes.” Which sign matches this?",
+            options: [
+              "Learn to swim – lessons Tuesday and Thursday – 7 p.m.",
+              "Join the tennis club – 2857341.",
+              "City pool – do not leave anything in the changing room."
+            ],
+            correct: 0
+          }
+        ]
+      },
+
+      /* ---------- LESSON 9 (G7) ---------- */
+      {
+        grade: "Grade 7",
+        title: "Lesson 4 – Weather & Places (G7)",
+        paragraph:
+          "These signs tell you about weather, danger, opening times and activities. Read the sentence and choose the sign that has this meaning.",
+        questions: [
+          {
+            text: "“You won’t get anything to eat here.” Which sign matches this?",
+            options: [
+              "Sorry! Restaurant closed.",
+              "Supermarket now open 24 hours a day.",
+              "Today’s weather – sunny, dry temperature."
+            ],
+            correct: 0
+          },
+          {
+            text: "“Parents should not let their children play here.” Which sign matches this?",
+            options: [
+              "Do not go near the ruins – danger of falling stones.",
+              "This bag is not a toy! Keep away from children.",
+              "Museum activity day – children aged 8 and up."
+            ],
+            correct: 1
+          },
+          {
+            text: "“You won’t need a raincoat today.” Which sign matches this?",
+            options: [
+              "Today’s weather – sunny, dry temperature.",
+              "No boats to Black Island because of bad weather.",
+              "City tours every 30 minutes."
+            ],
+            correct: 0
+          },
+          {
+            text: "“This is meant for young people.” Which sign matches this?",
+            options: [
+              "Museum activity day – children aged 8 and up.",
+              "Supermarket now open 24 hours a day.",
+              "Do not go near the ruins – danger of falling stones."
+            ],
+            correct: 0
+          },
+          {
+            text: "“You cannot travel here today.” Which sign matches this?",
+            options: [
+              "No boats to Black Island because of bad weather.",
+              "City tours every 30 minutes – last tour 6 p.m.",
+              "Supermarket now open 24 hours a day."
+            ],
+            correct: 0
+          },
+          {
+            text: "“You can visit this place at any time.” Which sign matches this?",
+            options: [
+              "Supermarket now open 24 hours a day.",
+              "City tours every 30 minutes – last tour 6 p.m.",
+              "Do not go near the ruins – danger of falling stones."
+            ],
+            correct: 0
+          }
+        ]
+      },
+
+      /* ---------- LESSON 10 (G7) ---------- */
+      {
+        grade: "Grade 7",
+        title: "Lesson 5 – Activities & Hobbies (G7)",
+        paragraph:
+          "These signs advertise different places to visit: gyms, zoos, riding clubs and more. Match each person with the best sign for their hobby or interest.",
+        questions: [
+          {
+            text: "Sameera is keen on keeping fit. Which sign is best for her?",
+            options: [
+              "Relax at our seaside restaurant.",
+              "Visit our new gym and try the exercise bikes.",
+              "The zoo is open 7 days a week."
+            ],
+            correct: 1
+          },
+          {
+            text: "Fatima loves birds and wild animals. Which sign is best for her?",
+            options: [
+              "The zoo is open 7 days a week.",
+              "Come and see the latest fashion clothes.",
+              "Come and join our riding club."
+            ],
+            correct: 0
+          },
+          {
+            text: "Noor likes playing team games. Which sign is best for her?",
+            options: [
+              "Come and use our volleyball courts.",
+              "We offer sailing, diving and swimming.",
+              "Learn to play golf with us."
+            ],
+            correct: 0
+          },
+          {
+            text: "Ali enjoys water sports. Which sign is best for him?",
+            options: [
+              "Relax at our seaside restaurant.",
+              "We offer sailing, diving and swimming.",
+              "Visit our new gym and try the exercise bikes."
+            ],
+            correct: 1
+          },
+          {
+            text: "Rashid is interested in new fashions. Which sign is best for him?",
+            options: [
+              "The zoo is open 7 days a week.",
+              "Come and see the latest fashion clothes.",
+              "Learn to play golf with us."
+            ],
+            correct: 1
+          },
+          {
+            text: "Hussain likes horses. Which sign is best for him?",
+            options: [
+              "Come and join our riding club.",
+              "Come and use our volleyball courts.",
+              "Visit our new gym and try the exercise bikes."
+            ],
+            correct: 0
+          }
+        ]
+      }
+    ];
+
+    const motivational = [
+      "Excellent job! 🌟",
+      "Amazing! Keep going 💜",
+      "You’re doing great! 👏",
+      "Brilliant answer! 🎉",
+      "Super star! ✨"
+    ];
+
+    /* ============================
+             DOM ELEMENTS
+       ============================ */
+
+    const startBtn = document.getElementById("startBtn");
+    const startSection = document.getElementById("startSection");
+    const quizSection = document.getElementById("quizSection");
+    const startError = document.getElementById("startError");
+
+    const welcomePlayer = document.getElementById("welcomePlayer");
+    const lessonTitle = document.getElementById("lessonTitle");
+    const lessonText = document.getElementById("lessonText");
+    const lessonSelect = document.getElementById("lessonSelect");
+    const quizContainer = document.getElementById("quizContainer");
+    const gradeSelect = document.getElementById("studentGrade");
+
+    /* ============================
+        FILL LESSONS BY GRADE
+       ============================ */
+
+    function populateLessonsForGrade(grade) {
+      // reset select
+      lessonSelect.innerHTML = '<option value="">Select a lesson</option>';
+
+      if (!grade) return;
+
+      lessons.forEach((lesson, index) => {
+        if (lesson.grade === grade) {
+          const opt = document.createElement("option");
+          opt.value = index;
+          opt.textContent = lesson.title;
+          lessonSelect.appendChild(opt);
+        }
+      });
+    }
+
+    gradeSelect.addEventListener("change", () => {
+      populateLessonsForGrade(gradeSelect.value);
+      // يرجّع اختيار الدرس فاضي
+      lessonSelect.value = "";
+    });
+
+    /* ============================
+             START QUIZ
+       ============================ */
+
+    startBtn.addEventListener("click", () => {
+      const name = document.getElementById("studentName").value.trim();
+      const grade = gradeSelect.value;
+      const lessonIndex = lessonSelect.value;
+
+      if (!name || !grade || lessonIndex === "") {
+        startError.classList.remove("d-none");
+        return;
+      }
+
+      const lesson = lessons[lessonIndex];
+
+      // Hide start, show quiz
+      startSection.classList.add("d-none");
+      quizSection.classList.remove("d-none");
+
+      welcomePlayer.textContent = `Good luck, ${name} from ${grade}! `;
+      lessonTitle.textContent = lesson.title;
+      lessonText.textContent = lesson.paragraph;
+
+      renderQuestions(lesson.questions);
+    });
+
+    /* ============================
+             RENDER QUESTIONS
+       ============================ */
+
+    function renderQuestions(questions) {
+      quizContainer.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const col = document.createElement("div");
+        col.className = "col-md-6";
+
+        const card = document.createElement("div");
+        card.className = "card quiz-card rounded-4 shadow-sm p-3 h-100";
+
+        const title = document.createElement("h3");
+        title.className = "h5 fw-bold mb-2";
+        title.textContent = `Question ${index + 1}`;
+
+        const text = document.createElement("p");
+        text.textContent = q.text;
+
+        const optionsDiv = document.createElement("div");
+
+        q.options.forEach((opt, i) => {
+          const id = `q${index}_opt${i}`;
+          const wrap = document.createElement("div");
+          wrap.className = "form-check";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `q_${index}`;
+          input.className = "form-check-input";
+          input.id = id;
+          input.value = i;
+
+          const label = document.createElement("label");
+          label.className = "form-check-label";
+          label.htmlFor = id;
+          const letter = String.fromCharCode(65 + i); // A/B/C
+          label.textContent = `${letter}. ${opt}`;
+
+          wrap.appendChild(input);
+          wrap.appendChild(label);
+          optionsDiv.appendChild(wrap);
+        });
+
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-sm btn-gradient fw-bold mt-3";
+        btn.textContent = "Check answer";
+
+        btn.addEventListener("click", () => {
+          card.classList.remove("correct", "incorrect");
+          feedback.classList.remove("correct", "incorrect");
+
+          const selected = card.querySelector("input[type=radio]:checked");
+
+          if (!selected) {
+            feedback.textContent = "Please choose an answer 🙂";
+            feedback.classList.add("incorrect");
+            return;
+          }
+
+          if (parseInt(selected.value, 10) === q.correct) {
+            card.classList.add("correct");
+            feedback.classList.add("correct");
+            feedback.textContent =
+              motivational[Math.floor(Math.random() * motivational.length)];
+          } else {
+            card.classList.add("incorrect");
+            feedback.classList.add("incorrect");
+            feedback.textContent = "Not correct yet — try again ❤️";
+          }
+        });
+
+        card.appendChild(title);
+        card.appendChild(text);
+        card.appendChild(optionsDiv);
+        card.appendChild(btn);
+        card.appendChild(feedback);
+        col.appendChild(card);
+        quizContainer.appendChild(col);
+      });
+    }
+  </script>
+
+</body>
+</html>
